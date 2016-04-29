@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Movie name:</strong>
+  <%= @movie.movie_name %>
+</p>
+
+<p>
+  <strong>Movie file:</strong>
+  <%= @movie.movie_file %>
+</p>
+
+<p>
+  <strong>Ready to watch:</strong>
+  <%= @movie.ready_to_watch %>
+</p>
+
+<%= link_to 'Edit', edit_movie_path(@movie) %> |
+<%= link_to 'Back', movies_path %>
