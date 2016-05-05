@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+<h1>Movie file</h1>
+<form action="<%= @presigned_post.url %>" method="post" enctype="multipart/form-data">
+  <% @presigned_post.fields.each do |name, value| %>
+    <input type="hidden" name="<%= name %>" value="<%= value %>"/>
+  <% end %>
+  <div class="field">
+    <input type="file" name="file"/>
+  </div>
+  <div class="actions">
+    <%= submit_tag %>
+  </div>
+</form>

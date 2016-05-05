@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: [:show, :edit, :update, :destroy]
+  before_action :set_movie, only: [:show, :edit, :update, :destroy, :upload_movie_file]
 
   before_action :authenticate_user!
 
@@ -30,7 +30,7 @@ class MoviesController < ApplicationController
 
     respond_to do |format|
       if @movie.save
-        format.html { redirect_to @movie, notice: 'Movie was successfully created.' }
+        format.html { redirect_to upload_movie_file_movie_path(@movie), notice: 'Movie was successfully created. Please upload movie file' }
         format.json { render :show, status: :created, location: @movie }
       else
         format.html { render :new }
@@ -56,6 +56,8 @@ class MoviesController < ApplicationController
   # DELETE /movies/1
   # DELETE /movies/1.json
   def destroy
+    s3_object = get_movie_object_on_s3
+    s3_object.delete unless s3_object.blank?
     @movie.destroy
     respond_to do |format|
       format.html { redirect_to movies_url, notice: 'Movie was successfully destroyed.' }
@@ -63,7 +65,39 @@ class MoviesController < ApplicationController
     end
   end
 
+  #create presigned post object and use ti to upload directly to S3
+  def upload_movie_file
+    bucket = get_input_bucket
+    @presigned_post = bucket.presigned_post({
+      key: @movie.movie_file,
+      success_action_status: "201",
+      success_action_redirect: request.base_url + movies_path,
+      content_type: "video/mp4"
+    })
+    puts @presigned_post.fields
+  end
+
   private
+
+    #s3 client
+    def get_s3_client
+      Aws::S3::Resource.new(region: AWS_REGION)
+    end
+
+    #get input bucket
+    def get_input_bucket
+      client = get_s3_client
+      buckets = client.buckets.select do |bucket| 
+        bucket.name==INPUT_BUCKET
+      end
+      buckets.first
+    end
+
+    def get_movie_object_on_s3
+      bucket = get_input_bucket
+      bucket.objects.first
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_movie
       @movie = Movie.find(params[:id])
