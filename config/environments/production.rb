@@ -77,7 +77,8 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  INPUT_BUCKET = "flix-input"
-  OUTPUT_BUCKET = "flix-output"
+  INPUT_BUCKET = "flix-movie-input"
+  OUTPUT_BUCKET = "flix-movie-output"
+  AWS_REGION = "us-east-1"
   
 end

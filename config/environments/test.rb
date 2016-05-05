@@ -40,7 +40,8 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-  INPUT_BUCKET = "flix-input"
-  OUTPUT_BUCKET = "flix-output"
+  INPUT_BUCKET = "flix-movie-input"
+  OUTPUT_BUCKET = "flix-movie-output"
+  AWS_REGION = "us-east-1"
   
 end
