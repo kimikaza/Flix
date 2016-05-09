@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :movies do
     member do
       get :upload_movie_file
+      get :finish_upload
     end
   end
 

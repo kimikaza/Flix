@@ -1,5 +1,5 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: [:show, :edit, :update, :destroy, :upload_movie_file]
+  before_action :set_movie, only: [:show, :edit, :update, :destroy, :upload_movie_file, :finish_upload]
 
   before_action :authenticate_user!
 
@@ -75,6 +75,20 @@ class MoviesController < ApplicationController
       content_type: "video/mp4"
     })
     puts @presigned_post.fields
+  end
+
+  #when upload finishes, create transcode job in AWS Elastic Transcoder
+  def finish_upload
+    res = @movie.create_transcode_job_hls!
+
+    if res.error
+      flash[:error] = "There was an error creating the transcode job for this movie."
+    else
+      @movie.update_attributes(ready_to_watch: false, transcode_error: false, transcode_hls_job_id: res.data[:job][:id])
+      flash[:success] = "The transcode job was started successfully, your video will be ready when it's finished."
+    end
+
+    redirect_to admin_movie_path(@movie)
   end
 
   private
