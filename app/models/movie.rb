@@ -31,13 +31,13 @@ class Movie < ActiveRecord::Base
           key: "hls600K",
           thumbnail_pattern: "",
           rotate: "0",
-          preset_id: "1351620000001-200035",
+          preset_id: "1351620000001-200045",
           :segment_duration => "10"},
         {
           key: "hls400K",
           thumbnail_pattern: "",
           rotate: "0",
-          preset_id: "1351620000001-200035",
+          preset_id: "1351620000001-200055",
           :segment_duration => "10"}
       ],
       playlists: [ {
