@@ -4,7 +4,6 @@ class Movie < ActiveRecord::Base
   def create_transcode_job_hls!
 
     output_bucket.objects(prefix: "#{self.movie_file}/hls/").each do |object_summary| 
-      byebug
       output_bucket.object(object_summary.key).delete
     end    
 
