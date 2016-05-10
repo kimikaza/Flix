@@ -42,5 +42,6 @@ Rails.application.configure do
   INPUT_BUCKET = "flix-movie-input"
   OUTPUT_BUCKET = "flix-movie-output"
   AWS_REGION = "us-east-1"
+  DEFAULT_PIPELINE = "1462526954402-vjgcmm"
 
 end

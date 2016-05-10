@@ -1,5 +1,6 @@
 class MoviesController < ApplicationController
-  before_action :set_movie, only: [:show, :edit, :update, :destroy, :upload_movie_file, :finish_upload]
+
+  before_action :set_movie, except: [:index, :new, :create]
 
   before_action :authenticate_user!
 
@@ -71,7 +72,7 @@ class MoviesController < ApplicationController
     @presigned_post = bucket.presigned_post({
       key: @movie.movie_file,
       success_action_status: "201",
-      success_action_redirect: request.base_url + movies_path,
+      success_action_redirect: request.base_url + finish_upload_movie_path(@movie),
       content_type: "video/mp4"
     })
     puts @presigned_post.fields
@@ -89,6 +90,10 @@ class MoviesController < ApplicationController
     end
 
     redirect_to admin_movie_path(@movie)
+  end
+
+  def watch
+
   end
 
   private

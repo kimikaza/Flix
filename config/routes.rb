@@ -2,14 +2,15 @@ Rails.application.routes.draw do
   
   devise_for :users
   
-  devise_scope :user do
-    root 'devise/sessions#new'
-  end
+  root to: "movies#index"
+
+
   
   resources :movies do
     member do
       get :upload_movie_file
       get :finish_upload
+      get :watch
     end
   end
 

@@ -3,9 +3,12 @@ class Movie < ActiveRecord::Base
 
   def create_transcode_job_hls!
 
-    self.bucket.objects.with_prefix("#{self.movie_file}/hls/").each { |o| o.delete }
+    output_bucket.objects(prefix: "#{self.movie_file}/hls/").each do |object_summary| 
+      byebug
+      output_bucket.object(object_summary.key).delete
+    end    
 
-    transcode_client = AWS::ElasticTranscoder::Client.new
+    transcode_client = Aws::ElasticTranscoder::Client.new(region: AWS_REGION)
     transcode_client.create_job({
       pipeline_id: DEFAULT_PIPELINE,
       output_key_prefix: "#{self.movie_file}/hls/",
@@ -40,24 +43,31 @@ class Movie < ActiveRecord::Base
       playlists: [ {
         :name => "hls_playlist",
         :format => "HLSv3",
-        :output_keys => hls_transcode_keys
+        :output_keys => ["hls1M", "hls600K", "hls400K"]
       } ]
     })
 
   end
 
-  private 
-
-  def bucket
-
+  def hls_playlist_url
+    output_bucket.object(output_bucket.objects(prefix: "#{self.movie_file}/hls/hls_playlist.m3u8").first.key).presigned_url(:get, expires_in: 3600)
   end
 
-  {
-        key: "#{size_info[:file]}",
-        thumbnail_pattern: "",
-        rotate: "0",
-        preset_id: TRANSCODE_PRESETS[size_info[:file]],
-        :segment_duration => "10"
-      }
+  #private 
+
+
+  #s3 client
+  def get_s3_client
+    Aws::S3::Resource.new(region: AWS_REGION)
+  end
+
+  #get input bucket
+  def output_bucket
+    client = get_s3_client
+    buckets = client.buckets.select do |bucket| 
+      bucket.name==OUTPUT_BUCKET
+    end
+    buckets.first
+  end
 
 end
