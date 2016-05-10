@@ -130,6 +130,6 @@ var is_msie = navigator.userAgent.toLowerCase().indexOf('msie') > -1;
 var is_safari = navigator.userAgent.toLowerCase().indexOf('safari') > -1;
 var is_idevice = (navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i));
 
-newplayer({"stream_url": "http://d6a0shi4su2i3.cloudfront.net/3koi/hls/hls_playlist.m3u8","poster":""});
+newplayer({"stream_url": "<%= @movie.hls+playlist_url %>","poster":""});
 -->
 </script>
