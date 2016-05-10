@@ -89,7 +89,7 @@ class MoviesController < ApplicationController
       flash[:success] = "The transcode job was started successfully, your video will be ready when it's finished."
     end
 
-    redirect_to admin_movie_path(@movie)
+    redirect_to movies_path
   end
 
   def watch
