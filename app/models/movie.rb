@@ -50,7 +50,7 @@ class Movie < ActiveRecord::Base
   end
 
   def hls_playlist_url
-    output_bucket.object(output_bucket.objects(prefix: "#{self.movie_file}/hls/hls_playlist.m3u8").first.key).presigned_url(:get, expires_in: 3600)
+    "https://"+CLOUD_FRONT_DOMAIN+"/#{movie_file}/hls/hls_playlist.m3u8"
   end
 
   #private 

@@ -44,5 +44,6 @@ Rails.application.configure do
   OUTPUT_BUCKET = "flix-movie-output"
   AWS_REGION = "us-east-1"
   DEFAULT_PIPELINE = "1462526954402-vjgcmm"
+  CLOUD_FRONT_DOMAIN = "d6a0shi4su2i3.cloudfront.net"
   
 end
