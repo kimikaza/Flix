@@ -1,5 +1,10 @@
 class Movie < ActiveRecord::Base
 
+  scope :transcoding, -> {
+     where(ready_to_watch: false)
+    .where.not(transcode_hls_job_id: ["", nil])
+  }
+
 
   def create_transcode_job_hls!
 
