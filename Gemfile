@@ -26,6 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 #authentication
 gem 'devise'
+gem 'simple_token_authentication', '~> 1.0'
 
 #database
 gem 'pg'
