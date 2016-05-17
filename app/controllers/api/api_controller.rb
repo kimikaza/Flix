@@ -1,6 +1,9 @@
 class Api::ApiController < ApplicationController
   protect_from_forgery with: :null_session
 
+  acts_as_token_authentication_handler_for User,
+    if: ->(controller) { controller.user_token_authenticable? }
+
   RESPONSE_STATUSES = {
     bad_request: {
       code: 400,
@@ -40,5 +43,11 @@ class Api::ApiController < ApplicationController
   rescue ActionController::UnknownFormat
     render status: @status[:code], text: message
   end
+
+  def user_token_authenticable?
+    # `nil` is still a falsy value, but I want a strictly boolean field here
+    if params[:action] == 'authenticate' then return false end
+  end
+
   
 end

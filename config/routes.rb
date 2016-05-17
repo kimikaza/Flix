@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post "authenticate" => "users#authenticate"
 
-      resources :movies
+      resources :movies, defaults: {format: :json}
     end
   end
 

@@ -5,6 +5,10 @@ class Movie < ActiveRecord::Base
     .where.not(transcode_hls_job_id: ["", nil])
   }
 
+  scope :watchable, -> {
+    where(ready_to_watch: true)
+  }
+
 
   def create_transcode_job_hls!
 

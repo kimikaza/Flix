@@ -5,6 +5,7 @@ def authenticate
     if user
       if user.valid_password?(params.require(:password))
         if user.save
+          puts(user.authentication_token)
           @token = user.authentication_token
           @success = true
         else
